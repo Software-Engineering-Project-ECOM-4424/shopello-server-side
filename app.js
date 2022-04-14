@@ -30,12 +30,13 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// error 
-app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.json(err.message)
-});
+// // error 
+// app.use(function (err, req, res, next) {
+//     res.status(err.status || 500);
+//     res.json(err.message)
+// });
 
+app.set('port', process.env.PORT || 3000);
 
 
 module.exports = app;
