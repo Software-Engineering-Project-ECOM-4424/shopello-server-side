@@ -20,6 +20,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.disable('x-powered-by');
 
+/* made for supertest . */
+app.get('/test', function (req, res, next) {
+    res.json('success 🔥🔥');
+});
+
 
 app.use('/api/v1', routes);
 
