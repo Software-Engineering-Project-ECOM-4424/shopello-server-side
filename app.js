@@ -6,6 +6,7 @@ var logger = require('morgan');
 const routes = require('./routes/index');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const dbContext = require('./database/connection')
 
 
 
@@ -22,8 +23,9 @@ app.disable('x-powered-by');
 
 /* made for supertest . */
 app.get('/test', function (req, res, next) {
-    res.json('success 🔥🔥');
+    res.status(200).json('success 🔥🔥');
 });
+
 
 
 app.use('/api/v1', routes);
@@ -35,11 +37,11 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// // error 
-// app.use(function (err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.json(err.message)
-// });
+// error 
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.json(err.message)
+});
 
 app.set('port', process.env.PORT || 3000);
 
