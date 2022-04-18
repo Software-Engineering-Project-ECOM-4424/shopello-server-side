@@ -4,8 +4,13 @@ const dbContext = require('../../database/connection')
 const { body, validationResult } = require('express-validator');
 
 
+router.post('signup');
+router.post('login');
+router.get('user');
+
+
 router.post(
-    'login',
+    'testdb2',
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
     function (req, res, next) {
@@ -61,7 +66,6 @@ router.post(
                 res.status(500).json(err)
             });
     });
-
 
 
 
