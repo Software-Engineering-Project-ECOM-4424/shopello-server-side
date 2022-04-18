@@ -38,7 +38,13 @@ switch (NODE_ENV) {
     }
     break;
   case 'test':
-    dbUrl = TEST_DB_URL;
+    options = {
+      user: DB_USER,
+      host: DB_HOST,
+      database: DB_TEST_DATABASE,
+      password: DB_PASSWORD,
+      port: DB_PORT,
+    }
     break;
   default:
     throw new Error('NO DATABASE URL Founded !');

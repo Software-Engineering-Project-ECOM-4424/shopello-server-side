@@ -1,6 +1,5 @@
 'use strict';
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router();
 const dbContext = require('../../database/connection')
 const { body, validationResult } = require('express-validator');
 
@@ -33,17 +32,21 @@ router.post(
 
 router.post(
     '/testdb',
+
     body('username').isLength({ min: 3 }),
+
+
     body('email').isEmail(),
+    
     body('password').isStrongPassword({ minLength: 8, minNumbers: 1, minSymbols: 1, minUppercase: 1, minLowercase: 1 }),
+    
     async (req, res, next) => {
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
-        const { username, email, password } = req.body;
-        console.log(password);
+        const { username, email, password } = req.body ;
         const { rows } = await dbContext.query('SELECT username, email FROM users WHERE email = $1', [email])
         if (rows.length > 0) {
             res.status(409).json({ "errors": "existed user" });
@@ -58,6 +61,7 @@ router.post(
                 res.status(500).json(err)
             });
     });
+
 
 
 
