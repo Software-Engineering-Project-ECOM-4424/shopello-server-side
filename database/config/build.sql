@@ -8,7 +8,7 @@ BEGIN;
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL
     );
-    
+
     ALTER TABLE
     users ADD CONSTRAINT users_email_unique UNIQUE(email);
 
@@ -24,6 +24,7 @@ BEGIN;
         name VARCHAR(100) NOT NULL,
         description TEXT NOT NULL,
         price FLOAT NOT NULL,
+        image VARCHAR(255) NOT NULL,
         category_id INT NOT NULL,
         CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
     );
