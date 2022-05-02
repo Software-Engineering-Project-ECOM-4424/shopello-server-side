@@ -5,7 +5,7 @@ require('dotenv').config()
 const {
   env: {
     NODE_ENV,
-    TEST_DB_URL,
+    DB_TEST_DATABASE,
     DB_URL,
     DB_USER,
     DB_HOST,
