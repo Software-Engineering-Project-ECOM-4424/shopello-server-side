@@ -29,4 +29,14 @@ BEGIN;
         CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
     );
 
+    INSERT INTO categories
+        (name)
+    VALUES
+        ('type1'),
+        ('type2'),
+        ('type3'),
+        ('type4'),
+        ('type5');
+
+    
     COMMIT;
