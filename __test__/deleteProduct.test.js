@@ -1,13 +1,11 @@
 const request = require('supertest');
 const app = require('../app');
 
-
-
-describe('test 404', function () {
-    it('get', () => {
+describe('index', function () {
+    it('GET /test  run', () => {
         return request(app)
-            .post('/blabla')
-            .expect(404)
+            .get('/test')
+            .expect(200)
             .expect('Content-Type', /json/);
-    });
+    }); 
 });

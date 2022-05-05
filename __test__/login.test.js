@@ -7,3 +7,54 @@ const dbBuild = require('../database/config/_build')
 beforeEach(() => dbBuild());
 afterAll(() => connection.end());
 
+describe('login /auth/login', function () {
+    it('post no data', () => {
+        return request(app)
+            .post('/api/v1/auth/login')
+            .send({
+                test: "a"
+            })
+            .expect(422)
+            .expect('Content-Type', /json/);
+    });
+    it('post short password', () => {
+        return request(app)
+            .post('/api/v1/auth/login')
+            .send({
+                email: "osama@test.com",
+                password: "asdf"
+            })
+            .expect(422)
+            .expect('Content-Type', /json/);
+    });
+     it('post false email', () => {
+        return request(app)
+            .post('/api/v1/auth/login')
+            .send({
+                email: "osama",
+                password: "asdfaasdfasdf2344!@#SD"
+            })
+            .expect(422)
+            .expect('Content-Type', /json/);
+    });
+    it('post false password', () => {
+        return request(app)
+            .post('/api/v1/auth/login')
+            .send({
+                email: "osama@test.com",
+                password: "qwerasdQ!1@#23r"
+            })
+            .expect(401)
+            .expect('Content-Type', /json/);
+    });
+    it('post correct login', () => {
+        return request(app)
+            .post('/api/v1/auth/login')
+            .send({
+                email: "osama@test.com",
+                password: "qwerasdQ!1@#"
+            })
+            .expect(200)
+            .expect('Content-Type', /json/);
+    });
+});
