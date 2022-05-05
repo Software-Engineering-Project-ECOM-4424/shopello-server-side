@@ -6,10 +6,7 @@ const {
 
 module.exports = async (req, res, next) => {
   try {
-    const {
-      cookies: { token },
-    } = req;
-
+    const token = req.headers.Authorization;
     if (token) {
       const value = await verifyToken(token, SECRET_KEY);
       req.body.userId = value.userId;
@@ -18,10 +15,6 @@ module.exports = async (req, res, next) => {
       res.status(401).json({ message: 'invalid' });
     }
   } catch (err) {
-    if (err.message.includes('invalid')) {
-      res.status(401).json({ message: 'invalid' });
-    } else {
-      next(err);
-    }
+    res.status(401).json({ message: 'invalid' });
   }
 };

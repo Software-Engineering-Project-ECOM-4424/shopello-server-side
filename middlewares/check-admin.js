@@ -1,19 +1,22 @@
 const { verifyToken } = require('../utils/jwt');
+const dbContext = require('../database/connection')
 
 module.exports = async (req, res, next) => {
+
   try {
-    const { admin } = req.cookies;
-    if (admin) {
-      const decoded = await verifyToken(admin, process.env.SECRET_KEY);
-      if (decoded.role === 'admin') {
-        return next();
+    const token = req.headers.Authorization;
+    if (token) {
+      const value = await verifyToken(token, SECRET_KEY);
+      const { rows } = await dbContext.query('SELECT * FROM users WHERE id = $1', [value.userId]);
+      if (rows[0].role !== "Admin") {
+        res.status(401).json({ message: 'invalid' });
       }
+      req.body.userId = value.userId;
+      next();
     } else {
-      res.status(401).json({
-        message: 'You are not authorized to perform this action.',
-      });
+      res.status(401).json({ message: 'invalid' });
     }
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    res.status(401).json({ message: 'invalid' });
   }
 };
