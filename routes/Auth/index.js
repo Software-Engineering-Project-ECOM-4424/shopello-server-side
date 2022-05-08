@@ -90,16 +90,18 @@ router.post('adminlogin',
 );
 
 
-router.get('user',
+router.get('/user',
     checkSignIn,
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SLELECT id,username,email FROM users WHERE id = $1', [req.body.userId])
+            console.log(req.userId)
+            const { rows } = await dbContext.query('SELECT id,username,email FROM users WHERE id = $1', [req.body.userId])
             if (rows.length > 0) {
                 return res.status(200).json(rows[0]);
             }
             else return res.status(500).json({ message: "No User" });
         } catch (error) {
+            // throw error
             res.status(500).json(error);
         }
     });
