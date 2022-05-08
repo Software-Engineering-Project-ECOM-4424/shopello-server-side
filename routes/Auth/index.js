@@ -34,8 +34,6 @@ router.post('/signup',
 
 
 router.post('/login',
-    body('email').isEmail(),
-    body('password').isLength({ min: 8 }),
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -49,7 +47,7 @@ router.post('/login',
                 const { SECRET_KEY } = process.env;
                 const userId = rows[0].id;
                 const token = await signToken(userId + "", SECRET_KEY);
-                return res.status(200).json({ token: token });
+                return res.status(200).json({ token: token,userId:userId });
             } else {
                 return res.status(401).json({ message: "bad credentials" });
             }
