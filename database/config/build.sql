@@ -28,6 +28,8 @@ BEGIN;
         category_id INT NOT NULL,
         CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
     );
+    ALTER TABLE products 
+    ADD COLUMN status BOOLEAN;
 
     INSERT INTO categories
         (name)

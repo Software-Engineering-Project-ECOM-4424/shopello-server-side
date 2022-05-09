@@ -4,7 +4,7 @@ const app = require('../app');
 
 
 describe('test 404', function () {
-    it('get', () => {
+    it('sdfsdf', () => {
         return request(app)
             .post('/blabla')
             .expect(404)

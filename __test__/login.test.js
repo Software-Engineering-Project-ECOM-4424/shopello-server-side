@@ -14,7 +14,7 @@ describe('login /auth/login', function () {
             .send({
                 test: "a"
             })
-            .expect(422)
+            .expect(401)
             .expect('Content-Type', /json/);
     });
     it('post short password', () => {
@@ -24,7 +24,7 @@ describe('login /auth/login', function () {
                 email: "osama@test.com",
                 password: "asdf"
             })
-            .expect(422)
+            .expect(401)
             .expect('Content-Type', /json/);
     });
      it('post false email', () => {
@@ -34,7 +34,7 @@ describe('login /auth/login', function () {
                 email: "osama",
                 password: "asdfaasdfasdf2344!@#SD"
             })
-            .expect(422)
+            .expect(401)
             .expect('Content-Type', /json/);
     });
     it('post false password', () => {
