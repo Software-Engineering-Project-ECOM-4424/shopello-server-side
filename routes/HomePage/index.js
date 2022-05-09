@@ -10,7 +10,7 @@ const path = require("path");
 router.get('/products',
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products')
+            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id')
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
@@ -24,7 +24,7 @@ router.get('/products',
 router.get('/products/category',
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products WHERE category_id = $1', [req.query.category_id])
+            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id WHERE category_id = $1', [req.query.category_id])
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
@@ -42,7 +42,7 @@ router.get('/product-details',
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
-            else return res.status(500).json({ message: "Product Unavailable" });
+            else return res.status(500).json({ message: "Category Unavailable" });
         } catch (error) {
             // throw error
             return res.status(500).json(error);
