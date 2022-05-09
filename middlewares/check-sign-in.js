@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
     if (token) {
       const value = await verifyToken(token, SECRET_KEY);
       req.body.userId = value;
-      console.log(value.userId)
       next();
     } else {
       return res.status(401).json({ message: 'invalid' });

@@ -94,7 +94,6 @@ router.get('/user',
     checkSignIn,
     async (req, res) => {
         try {
-            console.log(req.userId)
             const { rows } = await dbContext.query('SELECT id,username,email FROM users WHERE id = $1', [req.body.userId])
             if (rows.length > 0) {
                 return res.status(200).json(rows[0]);
@@ -102,8 +101,23 @@ router.get('/user',
             else return res.status(500).json({ message: "No User" });
         } catch (error) {
             // throw error
-            res.status(500).json(error);
+            return res.status(500).json(error);
         }
     });
+
+router.get('/products',
+    async (req, res) => {
+        try {
+            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products')
+            if (rows.length > 0) {
+                return res.status(200).json(rows);
+            }
+            else return res.status(500).json({ message: "No User" });
+        } catch (error) {
+            throw error
+            return res.status(500).json(error);
+        }
+    });
+
 
 module.exports = router;
