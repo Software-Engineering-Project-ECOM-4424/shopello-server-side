@@ -105,46 +105,6 @@ router.get('/user',
         }
     });
 
-router.get('/products',
-    async (req, res) => {
-        try {
-            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products')
-            if (rows.length > 0) {
-                return res.status(200).json(rows);
-            }
-            else return res.status(500).json({ message: "No Producte" });
-        } catch (error) {
-            // throw error
-            return res.status(500).json(error);
-        }
-    });
 
-router.get('/products/category',
-    async (req, res) => {
-        try {
-            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products WHERE category_id = $1', [req.headers.category_id])
-            if (rows.length > 0) {
-                return res.status(200).json(rows);
-            }
-            else return res.status(500).json({ message: "No Producte In Requested Category" });
-        } catch (error) {
-            // throw error
-            return res.status(500).json(error);
-        }
-    });
-
-router.get('/product-details',
-    async (req, res) => {
-        try {
-            const { rows } = await dbContext.query('SELECT id,name,description,price, image, category_id FROM products WHERE id = $1', [req.headers.product_id])
-            if (rows.length > 0) {
-                return res.status(200).json(rows);
-            }
-            else return res.status(500).json({ message: "Product Unavailable" });
-        } catch (error) {
-            // throw error
-            return res.status(500).json(error);
-        }
-    });
 
 module.exports = router;
