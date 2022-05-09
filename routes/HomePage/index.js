@@ -49,5 +49,19 @@ router.get('/product-details',
         }
     });
 
+router.get('/category-list',
+    async (req, res) => {
+        try {
+            const { rows } = await dbContext.query('SELECT name FROM  categories')
+            if (rows.length > 0) {
+                return res.status(200).json(rows);
+            }
+            else return res.status(500).json({ message: "Product Unavailable" });
+        } catch (error) {
+            // throw error
+            return res.status(500).json(error);
+        }
+    });
+
 
 module.exports = router
