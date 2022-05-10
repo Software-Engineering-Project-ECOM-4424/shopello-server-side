@@ -24,7 +24,8 @@ router.get('/products',
 router.get('/products/category',
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id WHERE category_id = $1', [req.query.category_id])
+            console.log(req.query.category_name)
+            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id where categories.name = $1', [req.query.category_name])
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
