@@ -64,5 +64,10 @@ router.get('/category-list',
         }
     });
 
+    router.get('search',
+        async (req, res) => {
+            //TODO: 
+        }
+    )
 
 module.exports = router
