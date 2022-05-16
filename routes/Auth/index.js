@@ -52,7 +52,6 @@ router.post('/login',
                 return res.status(401).json({ message: "bad credentials" });
             }
         } catch (err) {
-            console.log(err)
             return res.status(401).json(err);
         }
     }
