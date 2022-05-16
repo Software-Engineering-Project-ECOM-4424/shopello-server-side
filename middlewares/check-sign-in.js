@@ -12,9 +12,9 @@ module.exports = async (req, res, next) => {
       req.body.userId = value;
       next();
     } else {
-      return res.status(401).json({ message: 'invalid' });
+      return res.status(401).json({ message: 'invalid token' });
     }
   } catch (err) {
-    return res.status(401).json({ message: 'invalid' });
+    return res.status(401).json({ message: 'invalid exception' });
   }
 };
