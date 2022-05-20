@@ -26,7 +26,7 @@ BEGIN;
         price FLOAT NOT NULL,
         image VARCHAR(255) NOT NULL,
         category_id INT NOT NULL,
-        CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
+        CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id) on delete set null
     );
     ALTER TABLE products 
     ADD COLUMN status BOOLEAN;
