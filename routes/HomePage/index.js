@@ -64,10 +64,19 @@ router.get('/category-list',
         }
     });
 
-    router.get('search',
-        async (req, res) => {
-            //TODO: 
+router.get('/search',
+    async (req, res) => {
+        try {
+            const { rows } = await dbContext.query(`SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id WHERE products.name LIKE '%${req.query.query}%'`)
+            if (rows.length > 0) {
+                return res.status(200).json(rows);
+            }
+            else return res.status(500).json({ message: "No Producte" });
+        } catch (error) {
+            // throw error
+            return res.status(500).json(error);
         }
-    )
+    }
+)
 
 module.exports = router
