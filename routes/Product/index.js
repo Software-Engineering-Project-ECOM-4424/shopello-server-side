@@ -20,9 +20,10 @@ const upload = multer({
 
 
 router.get('/',
+    checkAdmin,
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SELECT * FROM products');
+            const { rows } = await dbContext.query('SELECT * FROM products where  status IS NULL or status = true');
             return res.status(200).json(rows);
         } catch (error) {
             res.status(500).json(error);
@@ -32,24 +33,24 @@ router.get('/',
 
 
 router.post('/',
-    // checkAdmin,
-    upload,
+    checkAdmin,
+    // upload,
     body('name').isLength({ min: 3 }),
     body('description').isLength({ min: 3 }),
     body('price').isFloat(),
     body('category_id').isInt(),
     async (req, res) => {
-        if (!req.file) {
-            return res.sendStatus(422);
-        }
+        //   if (!req.file) {
+        //     return res.sendStatus(422);
+        //}
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
         try {
-            const { name, description, price, category_id } = req.body;
+            const { name, description, price, category_id, image } = req.body;
             const result = await dbContext.query('INSERT INTO products(name, description, price, category_id, image, status) VALUES ($1, $2, $3, $4, $5, TRUE) RETURNING *;'
-                , [name, description, price, category_id, req.file.filename]);
+                , [name, description, price, category_id, image]);
             res.status(201).json(result.rows[0]);
         } catch (error) {
             return res.status(500).json(error);
@@ -58,6 +59,7 @@ router.post('/',
 );
 
 router.get('/:id',
+    checkAdmin,
     async (req, res) => {
         const id = req.params.id;
         try {
@@ -69,14 +71,15 @@ router.get('/:id',
         }
     });
 router.put('/:id',
+    checkAdmin,
     body('name').isLength({ min: 3 }),
     body('description').isLength({ min: 3 }),
     body('price').isFloat(),
     body('category_id').isInt(),
     async (req, res) => {
-        if (!req.file) {
-            return res.sendStatus(422);
-        }
+        // if (!req.file) {
+        //     return res.sendStatus(422);
+        // }
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
@@ -84,8 +87,11 @@ router.put('/:id',
         try {
             const id = req.params.id;
             const { name, description, price, category_id } = req.body;
-            const result = await dbContext.query('UPDATE products SET name=$1, description=$2, price=$3, category_id=$4, image=$5 WHERE id = $6 RETURNING *;'
-                , [name, description, price, category_id, req.file.filename, id]);
+
+            // const result = await dbContext.query('UPDATE products SET name=$1, description=$2, price=$3, category_id=$4, image=$5 WHERE id = $6 RETURNING *;'
+            //    , [name, description, price, category_id, req.file.filename, id]);
+            const result = await dbContext.query('UPDATE products SET name=$1, description=$2, price=$3, category_id=$4 WHERE id = $5 RETURNING *;'
+                , [name, description, price, category_id, id]);
             res.status(201).json(result.rows[0]);
         } catch (error) {
             return res.status(500).json(error);
@@ -93,10 +99,11 @@ router.put('/:id',
     }
 );
 router.delete('/:id',
-    async (req,res) => {
+checkAdmin,
+    async (req, res) => {
         try {
             const id = req.params.id;
-            const result = await dbContext.query('UPDATE products SET status=FALSE WHERE id = $1 RETURNING *',[id])
+            const result = await dbContext.query('UPDATE products SET status=FALSE WHERE id = $1 RETURNING *', [id])
             return res.status(200).json(result.rows[0]);
 
         } catch (error) {
