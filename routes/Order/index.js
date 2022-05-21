@@ -15,6 +15,7 @@ router.post('/',
         const userId = req.body.userId;
 
         try {
+            
             let { rows } = await dbContext.query('INSERT INTO orders(amount, user_id, status) values ($1, $2, $3) RETURNING *', [amount, req.body.userId, false]);
             // const order = rows[0];
             for (let i = 0; i < products.length; i++) {

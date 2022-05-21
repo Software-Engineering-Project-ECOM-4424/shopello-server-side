@@ -10,7 +10,7 @@ const path = require("path");
 router.get('/products',
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id')
+            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id where products.status=false')
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
@@ -25,7 +25,7 @@ router.get('/products/category',
     async (req, res) => {
         try {
             console.log(req.query.category_name)
-            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id where categories.name = $1', [req.query.category_name])
+            const { rows } = await dbContext.query('SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id where categories.name = $1 and products.status=false', [req.query.category_name])
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }
@@ -67,7 +67,7 @@ router.get('/category-list',
 router.get('/search',
     async (req, res) => {
         try {
-            const { rows } = await dbContext.query(`SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id WHERE products.name LIKE '%${req.query.query}%'`)
+            const { rows } = await dbContext.query(`SELECT products.id,products.name as productName,products.description,products.price, products.image, products.category_id,categories.name as categoryName FROM products inner join categories on products.category_id = categories.id WHERE products.name LIKE '%${req.query.query}%' and products.status = false`)
             if (rows.length > 0) {
                 return res.status(200).json(rows);
             }

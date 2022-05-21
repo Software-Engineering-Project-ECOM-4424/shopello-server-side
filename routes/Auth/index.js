@@ -59,7 +59,7 @@ router.post('/login',
 
 
 
-router.post('adminlogin',
+router.post('/adminlogin',
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
     async (req, res) => {
@@ -68,16 +68,22 @@ router.post('adminlogin',
             return res.status(422).json({ errors: errors.array() });
         }
         const { email, password } = req.body;
+
         try {
             const { rows } = await dbContext.query('SELECT role, password FROM users WHERE email = $1', [email])
             if (rows[0].role !== "Admin") {
                 return res.status(401).json({ message: "u r not authorozied" });
             }
-            const compared = await comparePasswords(rows[0].password, password);
+            const compared = await comparePasswords(password, rows[0].password);
+
             if (compared) {
                 const { SECRET_KEY } = process.env;
-                const userId = rows[0].id;
-                const token = await signToken(userId, SECRET_KEY);
+                // const userId = rows[0].id;
+                console.log(compared)
+
+                const token = await signToken("Admin", SECRET_KEY);
+
+
                 return res.status(200).json({ token: token });
             } else {
                 return res.status(401).json({ message: "bad credentials" });
