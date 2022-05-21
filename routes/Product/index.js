@@ -3,24 +3,24 @@ const router = require('express').Router();
 const dbContext = require('../../database/connection')
 const { body, validationResult } = require('express-validator');
 const checkAdmin = require('../../middlewares/check-admin');
-const multer = require('multer');
+// const multer = require('multer');
 const path = require("path");
 
-const storage = multer.diskStorage({
-    destination: "./images",
-    filename: function (req, file, cb) {
-        cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 10000000 },
-}).single("image");
+// const storage = multer.diskStorage({
+//     destination: "./images",
+//     filename: function (req, file, cb) {
+//         cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+//     }
+// });
+// const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 10000000 },
+// }).single("image");
 
 
 
 router.get('/',
-    checkAdmin,
+    // checkAdmin,
     async (req, res) => {
         try {
             const { rows } = await dbContext.query('SELECT * FROM products where  status IS NULL or status = true');
@@ -59,7 +59,7 @@ router.post('/',
 );
 
 router.get('/:id',
-    checkAdmin,
+    // checkAdmin,
     async (req, res) => {
         const id = req.params.id;
         try {
@@ -71,7 +71,7 @@ router.get('/:id',
         }
     });
 router.put('/:id',
-    checkAdmin,
+    // checkAdmin,
     body('name').isLength({ min: 3 }),
     body('description').isLength({ min: 3 }),
     body('price').isFloat(),
