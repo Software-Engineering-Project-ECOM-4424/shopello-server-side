@@ -23,4 +23,5 @@ describe('categories  GET api/v1/categories', function () {
             .expect(404)
             .expect('Content-Type', /json/);
     });
+
 });

@@ -7,6 +7,7 @@ const homePage = require('./HomePage');
 const categories = require('./Categories');
 const order = require('./Order')
 
+
 router.use('/auth', auth);
 router.use('/products', products);
 router.use('/homepage',homePage);

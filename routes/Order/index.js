@@ -44,6 +44,18 @@ router.get('/',
         }
 
     }
+);router.get('/order-details/:id',
+    async (req, res) => {
+        const id = req.params.id;
+        try {
+            const { rows } = await dbContext.query('SELECT order_details.id, order_details.product_id, order_details.quantity, order_details.order_id, products.name FROM order_details JOIN products ON order_details.product_id = products.id WHERE order_details.order_id = $1',id);
+            return res.json(rows);
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(error)
+        }
+
+    }
 );
 
 

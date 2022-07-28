@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 const checkAdmin = require('../../middlewares/check-admin');
 
 router.get('/',
+    checkAdmin,
     async (req, res) => {
         try {
             const { rows } = await dbContext.query('SELECT * FROM categories');
@@ -17,7 +18,7 @@ router.get('/',
 
 
 router.post('/',
-    // checkAdmin,
+    checkAdmin,
     body('name').isLength({ min: 3 }),
     async (req, res) => {
         const errors = validationResult(req);
@@ -47,7 +48,9 @@ router.get('/:id',
         }
     });
 
+
 router.put('/:id',
+    checkAdmin,
     body('name').isLength({ min: 3 }),
     async (req, res) => {
         const errors = validationResult(req);
@@ -69,10 +72,11 @@ router.put('/:id',
     }
 );
 router.delete('/:id',
+    checkAdmin,
     async (req, res) => {
         try {
             const id = req.params.id;
-            const result = await dbContext.query('UPDATE categories SET status=FALSE WHERE id = $1 RETURNING *', [id])
+            const result = await dbContext.query('delete from categories WHERE id = $1 RETURNING *', [id])
             return res.status(200).json(result.rows[0]);
         } catch (error) {
             return res.status(500).json(error)

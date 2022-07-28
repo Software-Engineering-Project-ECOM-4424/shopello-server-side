@@ -58,6 +58,5 @@ BEGIN;
         ('type3'),
         ('type4'),
         ('type5');
-
     
     COMMIT;
