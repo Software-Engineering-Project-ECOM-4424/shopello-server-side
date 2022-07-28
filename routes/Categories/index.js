@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 const checkAdmin = require('../../middlewares/check-admin');
 
 router.get('/',
-    checkAdmin,
+    // checkAdmin,
     async (req, res) => {
         try {
             const { rows } = await dbContext.query('SELECT * FROM categories');
